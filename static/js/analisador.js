@@ -248,6 +248,7 @@ function closeModal(){
 }
 
 function copiarSentenca(){
+    
     var inputSentenca = $("#sentenca-gerar").val();
     $("#sentenca").val(inputSentenca);
     closeModal();
