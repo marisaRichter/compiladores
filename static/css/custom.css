@@ -1,0 +1,85 @@
+@font-face {
+    font-family: title;
+    src: url(../fonts/MADE\ Florence\ Script\ PERSONAL\ USE.otf);
+}
+@font-face {
+    font-family: body;
+    src: url(../fonts/Fragmentcore.otf);
+}
+.blockquote{
+    background-color: #f1d0ff;
+    margin-top: 1%;
+}
+h1,h5 {
+    font-family: title;
+}
+body{
+    font-family: body;
+    font-size: 14pt;
+    letter-spacing: .2rem;
+}
+.css-title{
+    padding-top: 1%;
+}
+.css-none{
+    display: none;
+}
+.btn-gerar-sentenca:hover{
+    color:#fff;
+    background-color:#9529af;
+    border-color:#9529af;
+}
+.btn-gerar-sentenca{
+    color:#9529af;
+    border-color:#9529af;
+}
+.btn-next-step:hover{
+    color:#fff;
+    background-color:#7c049a;
+    border-color:#7c049a;
+}
+.btn-next-step{
+    color:#7c049a;
+    border-color:#7c049a;
+}
+.btn-gerar-pilha:hover{
+    color:#fff;
+    background-color:#430065;
+    border-color:#430065;
+}
+.btn-gerar-pilha{
+    color:#430065;
+    border-color:#430065;
+}
+.btn-clean:hover{
+    color:#fff;
+    background-color:#b7adbd;
+    border-color:#b7adbd;
+}
+.btn-clean{
+    color:#b7adbd;
+    border-color:#b7adbd;
+}
+.btn-next-footer{
+    position: fixed;
+    bottom: 0px;
+    right: 0px;
+    z-index: 5;
+    margin: 3% 3%;
+}
+.btn{
+    width: 160px;
+}
+.btn-disabled{
+    background-color: gray;
+}
+
+.row-to-select{
+    background-color: #d0ffc4;
+}
+.show{
+    z-index:  1040!important;
+}
+.fade{
+    z-index: -1;
+}

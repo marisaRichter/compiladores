@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+
+  <title>Analisador Sintático</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="static/css/bootstrap/bootstrap.min.css" rel="stylesheet">
+  <link href="static/css/custom.css" rel="stylesheet">
+</head>
+
+<body>
+  <div class="container">
+    <blockquote class="blockquote text-center">
+      <h1 class="mb-0 css-title">Analisador Sintático</h1>
+      <footer class="blockquote-footer">Marisa Richter</cite></footer>
+    </blockquote>
+    <div class="row">
+      <div class="col-sm">
+        <div class="input-group mb-2">
+          <div class="input-group-prepend">
+            <div class="input-group-text">Alfabeto</div>
+          </div>
+          <input type="text" readonly class="form-control" id="disabledTextInput" value="(a,b,c)">
+        </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">a</th>
+              <th scope="col">b</th>
+              <th scope="col">c</th>
+              <th scope="col">$</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">S</th>
+              <td class="S-a">S -> aCb</td>
+              <td class="empty">-</td>
+              <td class="empty">-</td>
+              <td class="empty">-</td>
+            </tr>
+            <tr>
+              <th scope="row">A</th>
+              <td class="empty">-</td>
+              <td class="A-b">A -> bC</td>
+              <td class="A-c">A -> cSa</td>
+              <td class="empty">-</td>
+            </tr>
+            <tr>
+              <th scope="row">B</th>
+              <td class="B-a">B -> aAc</td>
+              <td class="B-b">B -> ε</td>
+              <td class="B-c">B -> ε</td>
+              <td class="empty">-</td>
+            </tr>
+            <tr>
+              <th scope="row">C</th>
+              <td class="empty">-</td>
+              <td class="C-b">C -> bB</td>
+              <td class="C-c">C -> cAb</td>
+              <td class="empty">-</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-sm">
+        <div class="col-auto">
+          <div class="input-group mb-2">
+            <div class="input-group-prepend">
+              <div class="input-group-text">Sentença</div>
+            </div>
+            <input type="text" class="form-control" id="sentenca" placeholder="">
+          </div>
+        </div>
+        <div class="table-first-follow">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">First</th>
+                <th scope="col">Follow</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">(S)</th>
+                <td>{a}</td>
+                <td>{$, a}</td>
+              </tr>
+              <tr>
+                <th scope="row">(A)</th>
+                <td>{b, c}</td>
+                <td>{c, b}</td>
+              </tr>
+              <tr>
+                <th scope="row">(B)</th>
+                <td>{a, ε}</td>
+                <td>{b, c}</td>
+              </tr>
+              <tr>
+                <th scope="row">(C)</th>
+                <td>{c, b}</td>
+                <td>{b, c}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="table-pilha css-none">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Pilha</th>
+                <th scope="col">Entrada</th>
+                <th scope="col">Ação</th>
+              </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="col col-lg-2">
+        <div class="form-group">
+          <div class="input-group mb-2">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="stepByStep">
+              <label class="form-check-label" for="gridCheck1">
+                Step by Step
+              </label>
+            </div>
+          </div>
+          <div class="form-group">
+            <button type="button" class="btn btn-gerar-pilha" onclick="gerarPilha()">Gerar Pilha</button>
+          </div>
+          <div class="form-group stepByStep css-none">
+            <button type="button" class="btn btn-next-step" onclick="nextStep()">Next Step</button>
+          </div>
+          <div class="form-group">
+            <button type="button" class="btn btn-gerar-sentenca" data-toggle="modal" data-target="#exampleModal"
+              onclick="gerarSentenca()">Gerar Sentença</button>
+          </div>
+          <div class="form-group">
+            <button type="button" class="btn btn-clean" onclick="clean()">Limpar</button>
+          </div>
+          <div class="form-group">
+            <p><strong>S ::=</strong> aCb</p>
+            <p><strong>A ::=</strong> bC | cSa</p>
+            <p><strong>B ::=</strong> aAc | ε</p>
+            <p><strong>C ::=</strong> cAb | bB</p>
+          </div>
+          <button type="button" class="btn btn-next-step btn-next-footer css-none" onclick="nextStep()">Next
+            Step</button>
+        </div>
+      </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="modalGerarSentenca" tabindex="-1" role="dialog" aria-labelledby="modalGerarSentenca"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Gerar Sentença</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeModal()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+              <div class="input-group mb-2">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text">Sentença</div>
+                  </div>
+                  <input type="text" class="form-control" id="sentenca-gerar" placeholder="">
+                </div>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">a</th>
+                  <th scope="col">b</th>
+                  <th scope="col">c</th>
+                  <th scope="col">$</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="row-S">
+                  <th scope="row">S</th>
+                  <td class="S-a" onclick="addAcao('S','a')">S -> aCb</td>
+                  <td class="empty">-</td>
+                  <td class="empty">-</td>
+                  <td class="empty">-</td>
+                </tr>
+                <tr class="row-A">
+                  <th scope="row">A</th>
+                  <td class="empty">-</td>
+                  <td class="A-b" onclick="addAcao('A','b')">A -> bC</td>
+                  <td class="A-c" onclick="addAcao('A','c')">A -> cSa</td>
+                  <td class="empty">-</td>
+                </tr>
+                <tr class="row-B">
+                  <th scope="row">B</th>
+                  <td class="B-a" onclick="addAcao('B','a')">B -> aAc</td>
+                  <td class="B-b" onclick="addAcao('B','b')">B -> ε</td>
+                  <td class="B-c" onclick="addAcao('B','c')">B -> ε</td>
+                  <td class="empty">-</td>
+                </tr>
+                <tr class="row-C">
+                  <th scope="row">C</th>
+                  <td class="empty">-</td>
+                  <td class="C-b" onclick="addAcao('C','b')">C -> bB</td>
+                  <td class="C-c" onclick="addAcao('C','c')">C -> cAb</td>
+                  <td class="empty">-</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" onclick="copiarSentenca()">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-backdrop fade"></div>
+  <script src="static/js/bootstrap/bootstrap.min.js"></script>
+  <script src="static/js/jquery.js"></script>
+  <script src="static/js/analisador.js"></script>
+</body>
+
+</html>
