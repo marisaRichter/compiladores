@@ -60,9 +60,11 @@ function gerarPilha() {
         $(".stepByStep").removeClass("css-none");
         executar();
     } else {
-        while (cabecote != "$$" && error == false) {
-            executar();
-            //scrollToFooter();
+        if (!concluido) {
+            while (cabecote != "$$" && error == false) {
+                executar();
+                //scrollToFooter();
+            }
         }
     }
 
