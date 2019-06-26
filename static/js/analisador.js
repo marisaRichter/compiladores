@@ -62,7 +62,7 @@ function gerarPilha() {
     } else {
         while (cabecote != "$$" && error == false) {
             executar();
-            scrollToFooter();
+            //scrollToFooter();
         }
     }
 
@@ -71,7 +71,7 @@ function gerarPilha() {
 
 function nextStep() {
     executar();
-    scrollToFooter();
+    // scrollToFooter();
     doc = $(document).height();
     if (doc > win) {
         $(".btn-next-footer").removeClass("css-none");
@@ -145,6 +145,13 @@ function executar() {
 
         tBody.html(html);
     }
+    if (!concluido) {
+
+        scrollToFooter();
+    } else {
+        $(".btn-next-footer").addClass("css-none");
+    }
+
 }
 
 function verificaPilhaComEntrada(pilha, cabecote) {
@@ -182,10 +189,8 @@ function clean() {
 }
 
 function scrollToFooter() {
-    if (!concluido) {
 
-        $("html").animate({ scrollTop: doc }, "slow");
-    }
+    $("html").animate({ scrollTop: doc }, "slow");
 }
 
 function gerarSentenca() {
@@ -196,47 +201,53 @@ function gerarSentenca() {
 }
 
 function addAcao(naoTerminal, terminal) {
-    $(".row-" + naoTerminal).removeClass("row-to-select");
-    var input = pilhaGerarSentenca;
-    var nextAction = acoes[naoTerminal][terminal];
-    if (nextAction != "ep") {
-        input = input.replace(naoTerminal, nextAction);
+    if (!$(".row-" + naoTerminal).hasClass("block")) {
+        $(".row-" + naoTerminal).removeClass("row-to-select");
+        var input = pilhaGerarSentenca;
+        var nextAction = acoes[naoTerminal][terminal];
+        if (nextAction != "ep") {
+            input = input.replace(naoTerminal, nextAction);
 
-        for (var i = 0; i < nextAction.length; i++) {
-            var naoTerminalFlag = verificaNaoTerminal(nextAction[i]);
-            if (naoTerminalFlag) {
-                $(".row-" + nextAction[i]).addClass("row-to-select");
-                break;
-            }
-        }
-        pilhaGerarSentenca = input;
-        $("#sentenca-gerar").val(input);
-    } else {
-        input = "";
-        var countNaoTerminal = 0;
-        var hasNaoTerminal = false;
-        for (var i = 0; i < pilhaGerarSentenca.length; i++) {
-            var naoTerminalFlag = verificaNaoTerminal(pilhaGerarSentenca[i]);
-            if (naoTerminalFlag && countNaoTerminal == 0) {
-                $(".row-" + pilhaGerarSentenca[i]).removeClass("row-to-select");
-
-
-            } else if (naoTerminal) {
-                if (!hasNaoTerminal) {
-                    $(".row-" + pilhaGerarSentenca[i]).addClass("row-to-select");
-                    hasNaoTerminal = true;
-
+            for (var i = 0; i < nextAction.length; i++) {
+                var naoTerminalFlag = verificaNaoTerminal(nextAction[i]);
+                if (naoTerminalFlag) {
+                    $(".row-" + nextAction[i]).addClass("row-to-select");
+                    $(".row-" + nextAction[i]).removeClass("block");
+                    break;
                 }
-                input += pilhaGerarSentenca[i];
-            } else {
-                input += pilhaGerarSentenca[i];
             }
+            pilhaGerarSentenca = input;
+            $("#sentenca-gerar").val(input);
+        } else {
+            input = "";
+            var countNaoTerminal = 0;
+            var hasNaoTerminal = false;
+            for (var i = 0; i < pilhaGerarSentenca.length; i++) {
+                var naoTerminalFlag = verificaNaoTerminal(pilhaGerarSentenca[i]);
+                if (naoTerminalFlag && countNaoTerminal == 0) {
+                    $(".row-" + pilhaGerarSentenca[i]).removeClass("row-to-select");
+                    $(".row-" + nextAction[i]).addClass("block");
+
+
+                } else if (naoTerminal) {
+                    if (!hasNaoTerminal) {
+                        $(".row-" + pilhaGerarSentenca[i]).addClass("row-to-select");
+                        $(".row-" + nextAction[i]).removeClass("block");
+                        hasNaoTerminal = true;
+
+                    }
+                    input += pilhaGerarSentenca[i];
+                } else {
+                    input += pilhaGerarSentenca[i];
+                }
+            }
+            if (!hasNaoTerminal) {
+                $(".row-" + naoTerminal).removeClass("row-to-select");
+                $(".row-" + nextAction[i]).addClass("block");
+            }
+            pilhaGerarSentenca = input;
+            $("#sentenca-gerar").val(input);
         }
-        if (!hasNaoTerminal) {
-            $(".row-" + naoTerminal).removeClass("row-to-select");
-        }
-        pilhaGerarSentenca = input;
-        $("#sentenca-gerar").val(input);
     }
 
 }
@@ -246,6 +257,7 @@ function closeModal() {
     $(".modal-backdrop").removeClass("show");
     $("#modalGerarSentenca").hide();
     $("#sentenca-gerar").val("");
+    pilhaGerarSentenca = "S";
 }
 
 function copiarSentenca() {
@@ -254,9 +266,3 @@ function copiarSentenca() {
     $("#sentenca").val(inputSentenca);
     closeModal();
 }
-
-$(window).scroll(function () {
-    if ($(this).scrollTop() <= $(window).height() && concluido) {
-        $(".btn-next-footer").addClass("css-none");
-    }
-});

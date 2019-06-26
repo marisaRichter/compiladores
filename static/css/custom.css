@@ -33,6 +33,16 @@ body{
     color:#9529af;
     border-color:#9529af;
 }
+.btn-copiar-sentenca{
+    color:#fff;
+    background-color:#9529af;
+    border-color:#9529af;
+}
+.btn-copiar-sentenca:hover{
+    color:#fff;
+    background-color:#9529af;
+    border-color:#9529af;
+}
 .btn-next-step:hover{
     color:#fff;
     background-color:#7c049a;
